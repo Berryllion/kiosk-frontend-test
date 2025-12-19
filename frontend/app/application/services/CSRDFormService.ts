@@ -1,3 +1,4 @@
+import _ from "lodash";
 import type { DisclosureRequirement } from "../../domain/csrd-form/DisclosureRequirement";
 import type {
   CreateQuestionAnswerDTO,
@@ -15,6 +16,39 @@ export class CSRDFormService {
 
   getDisclosureRequirement(): DisclosureRequirement {
     return drData as DisclosureRequirement;
+  }
+
+  formDataToQuestionAnswers(formData: FormData): CreateQuestionAnswerDTO[] {
+    const questionAnswerDTOlist: CreateQuestionAnswerDTO[] = [];
+    const answerMap = new Map();
+
+    for (const [inputName, inputValue] of formData.entries()) {
+      const answerDepths = inputName.split(".");
+      const questionId = answerDepths.splice(0, 1)[0];
+
+      let currentValue = answerMap.get(questionId) || {};
+
+      if (answerMap.has(questionId)) {
+        _.set(currentValue, answerDepths, inputValue);
+      } else {
+        if (answerDepths.length) {
+          _.set(currentValue, answerDepths, inputValue);
+        } else {
+          currentValue = inputValue;
+        }
+
+        answerMap.set(questionId, currentValue);
+      }
+    }
+
+    answerMap.forEach((value, key) =>
+      questionAnswerDTOlist.push({
+        questionId: key,
+        answer: value,
+      }),
+    );
+
+    return questionAnswerDTOlist;
   }
 
   async saveAnswer(dto: CreateQuestionAnswerDTO): Promise<QuestionAnswer> {
