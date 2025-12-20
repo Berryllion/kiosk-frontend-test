@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 import { LuPlus } from "react-icons/lu";
-import { useDebounce } from "use-debounce";
 import { Button, HStack, Table as ChakraTable, Input } from "@chakra-ui/react";
 import Select from "../select";
 import { AddRowTableContext } from "./add-row-context";

@@ -59,7 +59,7 @@ function Table({
 
   const footer = addRowFooter ? (
     <ChakraTable.Footer>
-      <AddRowFooter {...addRowFooter} />
+      <AddRowFooter />
     </ChakraTable.Footer>
   ) : null;
 

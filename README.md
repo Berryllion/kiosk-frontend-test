@@ -51,6 +51,7 @@ The application will be available at `http://localhost:5173`.
 
 ## Next improvements
   - Services to get different lists: countries, employee types, contracts... and more detailed data.
+  - Reset added rows on submit
   - More detailed CreateQuestionAnswerDTO.answer (especially for number inputs) from:
   ```json
   // Example with S1-6_05
