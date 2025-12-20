@@ -44,8 +44,16 @@ function EmployeesByRegion({
     </React.Fragment>
   ));
 
+  const addRowFooter = {
+    addButtonText: "Ajouter region",
+    selectedRows: regionList,
+    onAddRow: (value: string) =>
+      setRegionList((previous) => [...previous, value]),
+  };
+
   return (
     <Table
+      addRowFooter={addRowFooter}
       title={<QuestionTitle id={id} label={label} />}
       body={body}
       columnNumber={3}

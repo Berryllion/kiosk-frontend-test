@@ -1,18 +1,19 @@
 import { useContext, useState } from "react";
 import { LuPlus } from "react-icons/lu";
-import { Button, HStack, Table as ChakraTable } from "@chakra-ui/react";
+import { useDebounce } from "use-debounce";
+import { Button, HStack, Table as ChakraTable, Input } from "@chakra-ui/react";
 import Select from "../select";
 import { AddRowTableContext } from "./add-row-context";
 import { toaster } from "../toaster";
 
-export interface AddRowFooterProps {
-  options: Array<{ id: string; name: string }>;
-}
-
-function AddRowFooter({ options }: AddRowFooterProps) {
-  const [rowToAdd, setRowToAdd] = useState<string>(options[0].id);
-
+function AddRowFooter() {
   const addRowContext = useContext(AddRowTableContext);
+
+  const options = addRowContext?.options ? addRowContext.options : null;
+
+  const [rowToAdd, setRowToAdd] = useState<string>(
+    options ? options[0].id : "",
+  );
 
   const handleAddRow = () => {
     const rowAlreadyExists =
@@ -30,15 +31,24 @@ function AddRowFooter({ options }: AddRowFooterProps) {
     }
   };
 
+  const input = options ? (
+    <Select
+      onChange={setRowToAdd}
+      options={options}
+      defaultValue={options ? options[0].id : ""}
+    />
+  ) : (
+    <Input
+      placeholder="..."
+      onChange={(event) => setRowToAdd(event.target.value)}
+    />
+  );
+
   return (
     <ChakraTable.Row>
       <ChakraTable.Cell colSpan={100}>
         <HStack>
-          <Select
-            onChange={setRowToAdd}
-            options={options}
-            defaultValue={options[0].id}
-          />
+          {input}
           <Button
             onClick={handleAddRow}
             colorPalette="blue"
