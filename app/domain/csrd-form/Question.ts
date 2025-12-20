@@ -32,9 +32,3 @@ export interface TableQuestion {
   readonly relatedQuestions?: ReadonlyArray<Question>;
   readonly unit: UnitType;
 }
-
-export interface TitleQuestion {
-  id: string;
-  label: string;
-  isRelatedQuestion?: boolean;
-}

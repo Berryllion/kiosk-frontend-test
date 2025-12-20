@@ -20,12 +20,8 @@ function NumberInput({
 }: NumberInputProps) {
   const ref = useRef<HTMLInputElement>(null);
 
-  const [isEmpty, setIsEmpty] = useState(false);
+  const [value, setValue] = useState("0");
   const isPercentage = unit === "%";
-
-  const onChange = () => {
-    setIsEmpty(ref.current?.value === "");
-  };
 
   return (
     <ChakraNumberInput.Root
@@ -34,13 +30,13 @@ function NumberInput({
       formatOptions={{
         style: isPercentage ? "percent" : "decimal",
       }}
-      onValueChange={onChange}
-      invalid={isEmpty}
+      value={value}
+      onValueChange={(event) => setValue(event.value)}
+      invalid={value === ""}
     >
       <ChakraNumberInput.Control />
       <ChakraNumberInput.Input
         ref={ref}
-        defaultValue="0"
         min={min}
         max={max}
         name={name}

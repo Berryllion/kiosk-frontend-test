@@ -49,4 +49,27 @@ pnpm dev
 
 The application will be available at `http://localhost:5173`.
 
-## Next improvement
+## Next improvements
+  - Services to get different lists: countries, employee types, contracts... and more detailed data.
+  - More detailed CreateQuestionAnswerDTO.answer (especially for number inputs) from:
+  ```json
+  // Example with S1-6_05
+  {
+    "fra": "0",
+  }
+  ```
+  To:
+  ```json
+  {
+    "fra": {
+      "type": "number",
+      "unit": null,
+      "value": 0,
+    }
+  }
+  ```
+  It could also be formatted properly when fetched depending on the use case.
+  - More DDD approach for the table component and its context
+  - Deletable rows for tables with variable rows
+  - Internationalisation
+  - Better toaster messages

@@ -8,6 +8,7 @@ import type { DisclosureRequirement } from "~/domain/csrd-form/DisclosureRequire
 import type { Route } from "../../+types/root";
 import Header from "./header";
 import FormQuestion from "./question";
+import { toaster } from "~/components/toaster";
 
 export async function loader() {
   const formService = new CSRDFormService();
@@ -50,11 +51,19 @@ export default function CSRDFormPage({
 
   const formQuestions = questions.map(questionToFormQuestion);
 
+  const onSubmit = () => {
+    toaster.create({
+      description: "Envoyé !",
+      type: "success",
+      closable: true,
+    });
+  };
+
   return (
     <div style={{ width: "90vw", margin: "3rem auto", maxWidth: "60rem" }}>
       <Header />
       <main>
-        <ReactRouterForm method="post">
+        <ReactRouterForm method="post" onSubmit={onSubmit}>
           <VStack alignItems="flex-start" rowGap={5}>
             {formQuestions}
             <Button type="submit">

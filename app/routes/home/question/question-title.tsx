@@ -1,11 +1,11 @@
 import { HStack, Badge, Heading } from "@chakra-ui/react";
-import type { TitleQuestion } from "~/domain/csrd-form/Question";
+import type { QuestionTitle as QuestionTitleType } from "~/domain/csrd-form/QuestionTitle";
 
 function QuestionTitle({
   id,
   label,
   isRelatedQuestion = false,
-}: TitleQuestion) {
+}: QuestionTitleType) {
   const headingSize = isRelatedQuestion ? "sm" : "lg";
   const badgeSize = isRelatedQuestion ? "xs" : "sm";
 
