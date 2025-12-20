@@ -51,7 +51,9 @@ export default function CSRDFormPage({
 
   const formQuestions = questions.map(questionToFormQuestion);
 
-  const onSubmit = () => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.currentTarget.reset();
+
     toaster.create({
       description: "Envoyé !",
       type: "success",
