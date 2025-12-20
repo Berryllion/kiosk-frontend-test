@@ -46,9 +46,6 @@ function EmployeesByRegion({
 
   return (
     <Table
-      addRowFooter
-      addRowLabel="Ajouter une région"
-      key={`table-${id}`}
       title={<QuestionTitle id={id} label={label} />}
       body={body}
       columnNumber={3}

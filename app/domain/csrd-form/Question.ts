@@ -1,5 +1,4 @@
 export type QuestionType = "table" | "number" | "enum" | "text" | "section";
-export type GenderType = "female" | "male" | "other";
 export type UnitType = string | null;
 
 export interface Question {

@@ -51,6 +51,10 @@ export class CSRDFormService {
     return questionAnswerDTOlist;
   }
 
+  async saveAnswer(dto: CreateQuestionAnswerDTO): Promise<QuestionAnswer> {
+    return this.questionAnswerRepository.create(dto);
+  }
+
   async saveAnswers(
     dtos: ReadonlyArray<CreateQuestionAnswerDTO>,
   ): Promise<ReadonlyArray<QuestionAnswer>> {

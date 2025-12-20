@@ -3,12 +3,11 @@ import type { TableQuestion } from "~/domain/csrd-form/Question";
 import { useState } from "react";
 import React from "react";
 import NumberInput from "~/components/number-input";
-// import Select from "~/components/select";
-import Table from "~/components/table";
 import QuestionTitle from "./question-title";
-import type { EmployeeCategoryType } from "~/domain/csrd-form/EmployeeCategory";
+import Table from "~/components/table";
+import type { EmployeeCategoryType } from "~/domain/employee/EmployeeCategory";
 
-const categoryList: { [key: string]: string } = {
+const categoryList: { [key in EmployeeCategoryType]: string } = {
   executive: "Cadre",
   employee: "Employé",
   supervisor: "Agent de maîtrise",
@@ -47,11 +46,7 @@ function InputRow({
     <>
       <ChakraTable.Row>
         <ChakraTable.Cell rowSpan={2}>
-          {/*<Select
-              placeholder="Sélectionner une catégorie"
-              options={employeeCategories}
-            />*/}
-          {categoryList[categoryId]}
+          {categoryList[categoryId as EmployeeCategoryType]}
         </ChakraTable.Cell>
         {rowsByCategory(categoryId)[0]}
       </ChakraTable.Row>
@@ -67,7 +62,7 @@ function EmployeesByCategory({
   unit,
 }: TableQuestion) {
   const [selectedCategories, setSelectedCategories] = useState<
-    EmployeeCategoryType[]
+    Array<EmployeeCategoryType>
   >(["executive", "employee"]);
 
   const body = selectedCategories.map((categoryId) => (
@@ -82,14 +77,30 @@ function EmployeesByCategory({
     </React.Fragment>
   ));
 
+  const categoryOptions = Object.entries(categoryList).map(([key, value]) => ({
+    id: key,
+    name: value,
+  }));
+
+  const addRowFooter = {
+    addButtonText: "Ajouter catégorie",
+    options: categoryOptions,
+    selectedRows: selectedCategories,
+    onAddRow: (value: string) =>
+      setSelectedCategories((previous) => [
+        ...previous,
+        value as EmployeeCategoryType,
+      ]),
+  };
+
   return (
     <Table
-      addRowFooter
-      addRowLabel="Ajouter une catégorie"
       title={<QuestionTitle id={id} label={label} />}
       body={body}
       columnNumber={3}
       columnsSize={["10%", "80%"]}
+      isEmpty={selectedCategories.length === 0}
+      addRowFooter={addRowFooter}
     />
   );
 }

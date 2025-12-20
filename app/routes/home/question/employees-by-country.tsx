@@ -3,13 +3,13 @@ import type { TableQuestion } from "~/domain/csrd-form/Question";
 import { useState } from "react";
 import React from "react";
 import NumberInput from "~/components/number-input";
-// import Select from "~/components/select";
 import Table from "~/components/table";
 import QuestionTitle from "./question-title";
 
 const countryList: { [key: string]: string } = {
-  FRA: "France",
-  DEU: "Allemagne",
+  fra: "France",
+  deu: "Allemagne",
+  esp: "Espagne",
 };
 
 function EmployeesByCountry({
@@ -18,7 +18,9 @@ function EmployeesByCountry({
   relatedQuestions,
   unit,
 }: TableQuestion) {
-  const [selectedCountries, setSelectedCountries] = useState(["FRA", "DEU"]);
+  const [selectedCountries, setSelectedCountries] = useState<Array<string>>([
+    "fra",
+  ]);
 
   const rowsByCountry = (countryCode: string) =>
     (relatedQuestions || []).map((relatedQuestion) => (
@@ -45,7 +47,6 @@ function EmployeesByCountry({
       <ChakraTable.Row>
         <ChakraTable.Cell rowSpan={2}>
           {countryList[countryCode]}
-          {/*<Select placeholder="Sélectionner un pays" options={countries} />*/}
         </ChakraTable.Cell>
         {rowsByCountry(countryCode)[0]}
       </ChakraTable.Row>
@@ -53,15 +54,27 @@ function EmployeesByCountry({
     </React.Fragment>
   ));
 
+  const countryOptions = Object.entries(countryList).map(([key, value]) => ({
+    id: key,
+    name: value,
+  }));
+
+  const addRowFooter = {
+    addButtonText: "Ajouter pays",
+    options: countryOptions,
+    selectedRows: selectedCountries,
+    onAddRow: (value: string) =>
+      setSelectedCountries((previous) => [...previous, value]),
+  };
+
   return (
     <Table
-      addRowFooter
-      addRowLabel="Ajouter un pays"
-      key={`table-${id}`}
       title={<QuestionTitle id={id} label={label} />}
       body={body}
       columnNumber={3}
       columnsSize={["10%", "80%"]}
+      isEmpty={selectedCountries.length === 0}
+      addRowFooter={addRowFooter}
     />
   );
 }

@@ -30,10 +30,6 @@ function NumberInput({
   return (
     <ChakraNumberInput.Root
       {...props}
-      defaultValue="0"
-      min={min}
-      max={max}
-      name={name}
       size="sm"
       formatOptions={{
         style: isPercentage ? "percent" : "decimal",
@@ -42,7 +38,14 @@ function NumberInput({
       invalid={isEmpty}
     >
       <ChakraNumberInput.Control />
-      <ChakraNumberInput.Input ref={ref} required={required} />
+      <ChakraNumberInput.Input
+        ref={ref}
+        defaultValue="0"
+        min={min}
+        max={max}
+        name={name}
+        required={required}
+      />
     </ChakraNumberInput.Root>
   );
 }

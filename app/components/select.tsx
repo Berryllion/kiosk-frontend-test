@@ -1,14 +1,14 @@
 import { NativeSelect as ChakraSelect } from "@chakra-ui/react";
-import { useMemo } from "react";
+import { useMemo, type ChangeEvent } from "react";
 
 interface SelectProps {
-  name: string;
-  placeholder?: string;
-  label?: string;
+  defaultValue?: string;
   options: Array<{ id: string; name: string }>;
+  onChange?: (value: string) => void;
+  name?: string;
 }
 
-function Select({ name, options }: SelectProps) {
+function Select({ defaultValue, options, onChange, name }: SelectProps) {
   const items = useMemo(
     () =>
       options.map((option) => (
@@ -16,12 +16,24 @@ function Select({ name, options }: SelectProps) {
           {option.name}
         </option>
       )),
-    [],
+    [options],
   );
+
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const value = event.currentTarget.value;
+    console.log("value", value);
+    onChange?.(value);
+  };
 
   return (
     <ChakraSelect.Root>
-      <ChakraSelect.Field name={name}>{items}</ChakraSelect.Field>
+      <ChakraSelect.Field
+        name={name}
+        defaultValue={defaultValue}
+        onChange={handleChange}
+      >
+        {items}
+      </ChakraSelect.Field>
       <ChakraSelect.Indicator />
     </ChakraSelect.Root>
   );

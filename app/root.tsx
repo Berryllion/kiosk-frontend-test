@@ -9,6 +9,7 @@ import {
 
 import type { Route } from "./+types/root";
 import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
+import { Toaster } from "./components/toaster";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -33,7 +34,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <ChakraProvider value={defaultSystem}>{children}</ChakraProvider>
+        <ChakraProvider value={defaultSystem}>
+          <Toaster />
+          {children}
+        </ChakraProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

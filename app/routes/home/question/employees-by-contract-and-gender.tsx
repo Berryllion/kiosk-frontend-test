@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import { Table as ChakraTable } from "@chakra-ui/react";
-import type { GenderType, TableQuestion } from "~/domain/csrd-form/Question";
+import type { TableQuestion } from "~/domain/csrd-form/Question";
 import Table from "~/components/table";
-import { useLoaderData } from "react-router";
 import NumberInput from "~/components/number-input";
+import type { ContractType } from "~/domain/employee/Contract";
+import type { GenderType } from "~/domain/employee/Gender";
 import QuestionTitle from "./question-title";
 
-const contractList: { [key: string]: string } = {
-  cdd: "CDD",
+const contractList: { [key in ContractType]: string } = {
   cdi: "CDI",
+  cdd: "CDD",
+};
+
+const genders: { [key in GenderType]: string } = {
+  female: "Femme",
+  male: "Homme",
+  other: "Autre",
 };
 
 function EmployeesByContractAndGender({
@@ -17,15 +24,10 @@ function EmployeesByContractAndGender({
   relatedQuestions,
   unit,
 }: TableQuestion) {
-  const { contracts } = useLoaderData();
-
-  const [selectedContracts, setSelectedContract] = useState(["cdd", "cdi"]);
-
-  const genders: { [key in GenderType]: string } = {
-    female: "Femme",
-    male: "Homme",
-    other: "Autre",
-  };
+  const [selectedContracts, setSelectedContract] = useState<Array<string>>([
+    "cdi",
+    "cdd",
+  ]);
 
   const rowsByGender = (contractCode: string) =>
     (relatedQuestions || []).map((relatedQuestion) => {
@@ -61,7 +63,7 @@ function EmployeesByContractAndGender({
     <React.Fragment key={`table-${id}-row-${contractCode}`}>
       <ChakraTable.Row>
         <ChakraTable.Cell rowSpan={2} width="1rem">
-          {contractList[contractCode]}
+          {contractList[contractCode as ContractType]}
         </ChakraTable.Cell>
         {rowsByGender(contractCode)[0]}
       </ChakraTable.Row>
@@ -82,15 +84,26 @@ function EmployeesByContractAndGender({
     </>
   );
 
+  const contractOptions = Object.entries(contractList).map(([key, value]) => ({
+    id: key,
+    name: value,
+  }));
+  const addRowFooter = {
+    addButtonText: "Ajouter contrat",
+    options: contractOptions,
+    selectedRows: selectedContracts,
+    onAddRow: (value: string) =>
+      setSelectedContract((previous) => [...previous, value]),
+  };
+
   return (
     <Table
-      addRowFooter
-      addRowLabel="Ajouter un type de contrat"
-      key={`table-${id}`}
       title={<QuestionTitle id={id} label={label} />}
       body={body}
       columnNumber={7}
+      isEmpty={selectedContracts.length === 0}
       columnsSize={["10%", "60%", "10%", "10%", "10%"]}
+      addRowFooter={addRowFooter}
     />
   );
 }
