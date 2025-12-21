@@ -1,7 +1,7 @@
 import React from "react";
-import { Form as ReactRouterForm } from "react-router";
+import { useFetcher } from "react-router";
 import { LuSendHorizontal } from "react-icons/lu";
-import { Button, VStack } from "@chakra-ui/react";
+import { Button, Spinner, VStack } from "@chakra-ui/react";
 import { CSRDFormService } from "~/application/services/CSRDFormService";
 import type { Question } from "~/domain/csrd-form/Question";
 import type { DisclosureRequirement } from "~/domain/csrd-form/DisclosureRequirement";
@@ -36,6 +36,7 @@ export default function CSRDFormPage({
   loaderData: DisclosureRequirement;
 }) {
   const { questions } = loaderData;
+  const fetcher = useFetcher();
 
   const questionToFormQuestion = (question: Question) => (
     <React.Fragment key={`question-${question.id}`}>
@@ -51,9 +52,7 @@ export default function CSRDFormPage({
 
   const formQuestions = questions.map(questionToFormQuestion);
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.currentTarget.reset();
-
+  const onSubmit = () => {
     toaster.create({
       description: "Envoyé !",
       type: "success",
@@ -61,19 +60,28 @@ export default function CSRDFormPage({
     });
   };
 
+  const disableSubmitButton = fetcher.state !== "idle";
+  const submitButtonContent = disableSubmitButton ? (
+    <Spinner />
+  ) : (
+    <>
+      Envoyer
+      <LuSendHorizontal />
+    </>
+  );
+
   return (
     <div style={{ width: "90vw", margin: "3rem auto", maxWidth: "60rem" }}>
       <Header />
       <main>
-        <ReactRouterForm method="post" onSubmit={onSubmit}>
+        <fetcher.Form method="post" onSubmit={onSubmit}>
           <VStack alignItems="flex-start" rowGap={5}>
             {formQuestions}
-            <Button type="submit">
-              Envoyer
-              <LuSendHorizontal />
+            <Button disabled={disableSubmitButton} type="submit">
+              {submitButtonContent}
             </Button>
           </VStack>
-        </ReactRouterForm>
+        </fetcher.Form>
       </main>
     </div>
   );

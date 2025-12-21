@@ -51,7 +51,7 @@ The application will be available at `http://localhost:5173`.
 
 ## Next improvements
   - Services to get different lists: countries, employee types, contracts... and more detailed data.
-  - Reset added rows on submit
+  - Reset input values
   - More detailed CreateQuestionAnswerDTO.answer (especially for number inputs) from:
   ```json
   // Example with S1-6_05
@@ -69,8 +69,6 @@ The application will be available at `http://localhost:5173`.
     }
   }
   ```
-  It could also be formatted properly when fetched depending on the use case.
-  - More DDD approach for the table component and its context
-  - Deletable rows for tables with variable rows
+  - Deletable rows for tables with variable row number
   - Internationalisation
   - Better toaster messages
